@@ -57,8 +57,9 @@ card to your hand.
 
 When you play a research card, discard it from your hand into the Science discard pile. Then reveal the top card of the strategy deck
 indicated by the research card you discarded, moving the revealed strategy card to the appropriate revealed cards zone. Then roll the
-Acceleration Risk die. If the number shown on the Acceleration Risk die is lower than the Acceleration Risk value shown on the card, advance
-Mad Science. (You don't actually need to roll the die if the Acceleration Risk level is zero since this can't advance Mad Science)
+Acceleration Risk die. If the number shown on the Acceleration Risk die is equal to or lower than the Acceleration Risk value shown on the
+card, advance Mad Science. (You don't actually need to roll the die if the Acceleration Risk level is zero since this can't advance Mad
+Science)
 
 ---
 
