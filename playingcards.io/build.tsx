@@ -5,9 +5,25 @@ import { range, zip } from "https://deno.land/x/lodash@4.17.15-es/lodash.js";
 import React, { ReactNode } from "npm:react@18.2.0";
 import ReactMarkdown from "npm:react-markdown@8.0.7";
 import satori from "npm:satori@0.10.1";
+import { encode } from "https://deno.land/std@0.202.0/encoding/base64.ts";
 
-function Rules({ page, numPages, content }: { page: number; numPages: number; content: string }) {
-  const markdown = ReactMarkdown({ components: markdownComponents, children: content });
+function encodeImage(image: string) {
+  return `data:image/png;base64,${encode(Deno.readFileSync(image))}`;
+}
+
+function Rules({
+  page,
+  numPages,
+  content,
+}: {
+  page: number;
+  numPages: number;
+  content: string;
+}) {
+  const markdown = ReactMarkdown({
+    components: markdownComponents,
+    children: content,
+  });
   return (
     <div tw="flex flex-col items-center w-full h-full bg-white font-sans text-base p-1">
       <div tw="flex flex-col flex-grow w-full">
@@ -21,12 +37,17 @@ function Rules({ page, numPages, content }: { page: number; numPages: number; co
 }
 
 enum Strategy {
-  FIRST = "Prosaic YOLO Shard",
+  FIRST = "Prosaic Alignment",
   SECOND = "Pivotal Act",
   THIRD = "Agent Foundations",
   FOURTH = "Governance",
 }
-const strategies = [Strategy.FIRST, Strategy.SECOND, Strategy.THIRD, Strategy.FOURTH];
+const strategies = [
+  Strategy.FIRST,
+  Strategy.SECOND,
+  Strategy.THIRD,
+  Strategy.FOURTH,
+];
 
 function bg(strategy: Strategy) {
   return strategy === Strategy.FIRST
@@ -40,63 +61,147 @@ function bg(strategy: Strategy) {
     : "";
 }
 
-function InnovationCard({ risk, strategy }: { risk: number; strategy: Strategy }) {
+function image(strategy: Strategy) {
+  return strategy === Strategy.FIRST
+    ? encodeImage("images/prosaic_alignment.png")
+    : strategy === Strategy.SECOND
+    ? encodeImage("images/pivotal_act.png")
+    : strategy === Strategy.THIRD
+    ? encodeImage("images/agent_foundations.png")
+    : strategy === Strategy.FOURTH
+    ? encodeImage("images/governance.png")
+    : "";
+}
+
+function flavor_text(strategy: Strategy) {
+  return strategy === Strategy.FIRST
+    ? "Improve and scale up current known techniques."
+    : strategy === Strategy.SECOND
+    ? "Create aligned AI capable enough to prevent takeover."
+    : strategy === Strategy.THIRD
+    ? "Understand the fundamental nature of neural networks."
+    : strategy === Strategy.FOURTH
+    ? "Regulate compute and data needed for AGI."
+    : "";
+}
+
+function InnovationCard({
+  risk,
+  strategy,
+}: {
+  risk: number;
+  strategy: Strategy;
+}) {
   return (
-    <div tw={`flex flex-col items-center w-full h-full font-sans text-base p-3 ${bg(strategy)}`}>
-      <div tw="flex text-center text-3xl font-bold mb-3 mt-1">Innovation</div>
+    <div
+      tw={`flex flex-col items-center w-full h-full font-sans text-base p-3 ${
+        bg(
+          strategy,
+        )
+      }`}
+    >
+      <div tw="flex text-center text-3xl font-bold mb-1 mt-1">Innovation</div>
       <div tw="flex text-center text-2xl flex-grow">{strategy}</div>
-      <div tw="flex text-center text-2xl font-bold mb-1 mt-3">Acceleration Risk: {risk}</div>
+      <img
+        src={image(strategy)}
+        tw="rounded w-innovation h-innovation mx-auto"
+      />
+      <div tw="flex text-center text-2xl font-bold mb-1 mt-1">
+        Accel. Risk: {risk}
+      </div>
     </div>
   );
 }
 
 function ResearchCard({ strategy }: { strategy: Strategy }) {
   return (
-    <div tw={`flex flex-col items-center w-full h-full font-sans text-base p-3 ${bg(strategy)}`}>
-      <div tw="flex text-center text-3xl font-bold mb-3 mt-1">Research</div>
-      <div tw="flex text-center text-2xl flex-grow">{strategy}</div>
+    <div
+      tw={`flex flex-col items-center w-full h-full font-sans text-base p-3 ${
+        bg(
+          strategy,
+        )
+      }`}
+    >
+      <div tw="flex text-center text-3xl font-bold mb-1 mt-1">Research</div>
+      <div tw="flex text-center text-2xl mb-2">{strategy}</div>
+      <img
+        src={image(strategy)}
+        tw="rounded w-innovation h-innovation mx-auto"
+      />
     </div>
   );
 }
 
 function MadScienceCard() {
   return (
-    <div tw={`flex flex-col items-center justify-center w-full h-full font-sans text-base p-1 bg-purple-500`}>
+    <div
+      tw={`flex flex-col items-center justify-center w-full h-full font-sans text-base p-1 bg-purple-500`}
+    >
       <div tw="flex text-center text-3xl font-bold">MAD SCIENCE !</div>
     </div>
   );
 }
 
-function StrategyCard({ value, strategy }: { value: number; strategy: Strategy }) {
+function StrategyCard({
+  value,
+  strategy,
+}: {
+  value: number;
+  strategy: Strategy;
+}) {
   return (
-    <div tw={`flex flex-col items-center w-full h-full font-sans text-base p-3 ${bg(strategy)}`}>
-      <div tw="flex text-center text-3xl font-bold mb-3 mt-1">Strategy</div>
-      <div tw="flex text-center text-2xl mb-1">{strategy}</div>
-      <div tw="flex text-center text-9xl font-bold">{value}</div>
+    <div
+      tw={`flex flex-col items-center w-full h-full font-sans text-base p-3 ${
+        bg(
+          strategy,
+        )
+      }`}
+    >
+      <div tw="flex w-full items-center justify-between">
+        <div tw={`flex text-${value < 10 ? "4xl" : "3xl"} font-bold`}>
+          {value}
+        </div>
+        <div tw="flex text-3xl font-bold">Strategy</div>
+      </div>
+      <div tw={`flex text-center text-3xl mt-2 mb-1 font-bold`}>{strategy}</div>
+      <div tw="flex grow"></div>
+      <div tw="flex text-center text-2xl mb-1">{flavor_text(strategy)}</div>
     </div>
   );
 }
 
 const pages = (await Deno.readTextFile("rules.md")).split("---");
 for (const [page, pageNum] of enumerate(pages)) {
-  render(`images/rules_${pageNum + 1}.svg`, <Rules page={pageNum + 1} numPages={pages.length} content={page} />);
+  render(
+    `images/rules_${pageNum + 1}.svg`,
+    <Rules page={pageNum + 1} numPages={pages.length} content={page} />,
+  );
 }
 
 for (const [strategy, strategyNum] of enumerate(strategies)) {
   for (const risk of range(6)) {
-    render(`images/innovation_${strategyNum + 1}_${risk}.svg`, <InnovationCard risk={risk} strategy={strategy} />);
+    render(
+      `images/innovation_${strategyNum + 1}_${risk}.svg`,
+      <InnovationCard risk={risk} strategy={strategy} />,
+    );
   }
 }
 
 for (const [strategy, strategyNum] of enumerate(strategies)) {
-  render(`images/research_${strategyNum + 1}.svg`, <ResearchCard strategy={strategy} />);
+  render(
+    `images/research_${strategyNum + 1}.svg`,
+    <ResearchCard strategy={strategy} />,
+  );
 }
 
 render(`images/mad_science.svg`, <MadScienceCard />);
 
 for (const [strategy, strategyNum] of enumerate(strategies)) {
   for (const value of range(13)) {
-    render(`images/strategy_${strategyNum + 1}_${value + 1}.svg`, <StrategyCard value={value + 1} strategy={strategy} />);
+    render(
+      `images/strategy_${strategyNum + 1}_${value + 1}.svg`,
+      <StrategyCard value={value + 1} strategy={strategy} />,
+    );
   }
 }
 
@@ -146,7 +251,17 @@ async function render(path: string, node: ReactNode) {
               xl: "6px",
               "2xl": "10px",
               "3xl": "12px",
+              "4xl": "16px",
+              "5xl": "18px",
               "9xl": "70px",
+            },
+            width: {
+              research: "77px",
+              innovation: "67px",
+            },
+            height: {
+              research: "77px",
+              innovation: "67px",
             },
           },
         },
@@ -161,7 +276,10 @@ const zipWriter = new ZipWriter(zipFileWriter);
 await zipWriter.add("widgets.json", new TextReader(JSON.stringify(output)));
 for await (const file of Deno.readDir("images")) {
   if (!file.isFile) continue;
-  await zipWriter.add(`userassets/${file.name}`, new BlobReader(new Blob([await Deno.readFile(`images/${file.name}`)])));
+  await zipWriter.add(
+    `userassets/${file.name}`,
+    new BlobReader(new Blob([await Deno.readFile(`images/${file.name}`)])),
+  );
 }
 await zipWriter.close();
 await Deno.writeFile("output.pcio", await zipFileWriter.getData());
