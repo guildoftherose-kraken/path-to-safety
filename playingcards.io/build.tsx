@@ -1,5 +1,10 @@
 #!/usr/bin/env -S deno run --no-prompt --allow-read --allow-write
-import { BlobReader, TextReader, Uint8ArrayWriter, ZipWriter } from "https://deno.land/x/zipjs@v2.7.20/index.js";
+import {
+  BlobReader,
+  TextReader,
+  Uint8ArrayWriter,
+  ZipWriter,
+} from "https://deno.land/x/zipjs@v2.7.20/index.js";
 import { range, zip } from "https://deno.land/x/lodash@4.17.15-es/lodash.js";
 // @deno-types="npm:@types/react@18.2.15"
 import React, { ReactNode } from "npm:react@18.2.0";
@@ -42,6 +47,7 @@ enum Strategy {
   THIRD = "Agent Foundations",
   FOURTH = "Governance",
 }
+
 const strategies = [
   Strategy.FIRST,
   Strategy.SECOND,
@@ -51,13 +57,13 @@ const strategies = [
 
 function bg(strategy: Strategy) {
   return strategy === Strategy.FIRST
-    ? "bg-red-500"
+    ? "bg-prosaic_alignment"
     : strategy === Strategy.SECOND
-    ? "bg-blue-500"
+    ? "bg-pivotal_act"
     : strategy === Strategy.THIRD
-    ? "bg-green-500"
+    ? "bg-agent_foundations"
     : strategy === Strategy.FOURTH
-    ? "bg-yellow-500"
+    ? "bg-governance"
     : "";
 }
 
@@ -94,19 +100,13 @@ function InnovationCard({
 }) {
   return (
     <div
-      tw={`flex flex-col items-center w-full h-full font-sans text-base p-3 ${
-        bg(
-          strategy,
-        )
-      }`}
+      tw={`flex flex-col items-center w-full h-full font-sans text-base 
+      ${bg(strategy)}`}
     >
-      <div tw="flex text-center text-3xl font-bold mb-1 mt-1">Innovation</div>
-      <div tw="flex text-center text-2xl flex-grow">{strategy}</div>
-      <img
-        src={image(strategy)}
-        tw="rounded w-innovation h-innovation mx-auto"
-      />
-      <div tw="flex text-center text-2xl font-bold mb-1 mt-1">
+      <div tw="flex text-center text-3xl font-bold mb-0.5 mt-1">Innovation</div>
+      <div tw="flex text-center text-2xl mb-1">{strategy}</div>
+      <img src={image(strategy)} tw="w-full mx-auto" />
+      <div tw="flex text-center text-2xl font-bold mb-1">
         Accel. Risk: {risk}
       </div>
     </div>
@@ -116,18 +116,12 @@ function InnovationCard({
 function ResearchCard({ strategy }: { strategy: Strategy }) {
   return (
     <div
-      tw={`flex flex-col items-center w-full h-full font-sans text-base p-3 ${
-        bg(
-          strategy,
-        )
-      }`}
+      tw={`flex flex-col items-center w-full h-full font-sans text-base
+      ${bg(strategy)}`}
     >
-      <div tw="flex text-center text-3xl font-bold mb-1 mt-1">Research</div>
-      <div tw="flex text-center text-2xl mb-2">{strategy}</div>
-      <img
-        src={image(strategy)}
-        tw="rounded w-innovation h-innovation mx-auto"
-      />
+      <div tw="flex text-center text-3xl font-bold mb-0.5 mt-1">Research</div>
+      <div tw="flex text-center text-2xl mb-1">{strategy}</div>
+      <img src={image(strategy)} tw="w-full mx-auto" />
     </div>
   );
 }
@@ -135,9 +129,12 @@ function ResearchCard({ strategy }: { strategy: Strategy }) {
 function MadScienceCard() {
   return (
     <div
-      tw={`flex flex-col items-center justify-center w-full h-full font-sans text-base p-1 bg-purple-500`}
+      tw={`flex flex-col items-center justify-center w-full h-full font-sans text-base bg-mad_science`}
     >
-      <div tw="flex text-center text-3xl font-bold">MAD SCIENCE !</div>
+      <div tw="flex text-center text-5xl text-white font-bold">
+        MAD SCIENCE!
+      </div>
+      <img src={encodeImage("images/mad_science.png")} tw="w-full mx-auto" />
     </div>
   );
 }
@@ -151,13 +148,11 @@ function StrategyCard({
 }) {
   return (
     <div
-      tw={`flex flex-col items-center w-full h-full font-sans text-base p-3 ${
-        bg(
-          strategy,
-        )
-      }`}
+      tw={`flex flex-col items-center w-full h-full font-sans text-base p-3 ${bg(
+        strategy
+      )}`}
     >
-      <div tw="flex w-full items-center justify-between">
+      <div tw="flex w-full items-center h-[20px] justify-between">
         <div tw={`flex text-${value < 10 ? "4xl" : "3xl"} font-bold`}>
           {value}
         </div>
@@ -174,7 +169,7 @@ const pages = (await Deno.readTextFile("rules.md")).split("---");
 for (const [page, pageNum] of enumerate(pages)) {
   render(
     `images/rules_${pageNum + 1}.svg`,
-    <Rules page={pageNum + 1} numPages={pages.length} content={page} />,
+    <Rules page={pageNum + 1} numPages={pages.length} content={page} />
   );
 }
 
@@ -182,7 +177,7 @@ for (const [strategy, strategyNum] of enumerate(strategies)) {
   for (const risk of range(6)) {
     render(
       `images/innovation_${strategyNum + 1}_${risk}.svg`,
-      <InnovationCard risk={risk} strategy={strategy} />,
+      <InnovationCard risk={risk} strategy={strategy} />
     );
   }
 }
@@ -190,7 +185,7 @@ for (const [strategy, strategyNum] of enumerate(strategies)) {
 for (const [strategy, strategyNum] of enumerate(strategies)) {
   render(
     `images/research_${strategyNum + 1}.svg`,
-    <ResearchCard strategy={strategy} />,
+    <ResearchCard strategy={strategy} />
   );
 }
 
@@ -200,18 +195,30 @@ for (const [strategy, strategyNum] of enumerate(strategies)) {
   for (const value of range(13)) {
     render(
       `images/strategy_${strategyNum + 1}_${value + 1}.svg`,
-      <StrategyCard value={value + 1} strategy={strategy} />,
+      <StrategyCard value={value + 1} strategy={strategy} />
     );
   }
 }
 
 const markdownComponents = {
-  h1: ({ node, ...props }: Record<string, unknown>) => <div tw="flex text-xl font-bold mb-0.5" {...props} />,
-  h3: ({ node, ...props }: Record<string, unknown>) => <div tw="flex text-lg font-bold mb-0.5" {...props} />,
-  h4: ({ node, ...props }: Record<string, unknown>) => <div tw="flex font-bold" {...props} />,
-  p: ({ node, ...props }: Record<string, unknown>) => <div tw="flex mb-0.5" {...props} />,
-  ol: ({ node, ...props }: Record<string, unknown>) => <div tw="flex flex-col" {...props} />,
-  li: ({ node, ...props }: Record<string, unknown>) => <div tw="flex mb-0.5">• {props.children as ReactNode}</div>,
+  h1: ({ node, ...props }: Record<string, unknown>) => (
+    <div tw="flex text-xl font-bold mb-0.5" {...props} />
+  ),
+  h3: ({ node, ...props }: Record<string, unknown>) => (
+    <div tw="flex text-lg font-bold mb-0.5" {...props} />
+  ),
+  h4: ({ node, ...props }: Record<string, unknown>) => (
+    <div tw="flex font-bold" {...props} />
+  ),
+  p: ({ node, ...props }: Record<string, unknown>) => (
+    <div tw="flex mb-0.5" {...props} />
+  ),
+  ol: ({ node, ...props }: Record<string, unknown>) => (
+    <div tw="flex flex-col" {...props} />
+  ),
+  li: ({ node, ...props }: Record<string, unknown>) => (
+    <div tw="flex mb-0.5">• {props.children as ReactNode}</div>
+  ),
 };
 
 function enumerate<T>(input: Array<T>): Array<[T, number]> {
@@ -253,6 +260,7 @@ async function render(path: string, node: ReactNode) {
               "3xl": "12px",
               "4xl": "16px",
               "5xl": "18px",
+              "7xl": "22px",
               "9xl": "70px",
             },
             width: {
@@ -263,10 +271,17 @@ async function render(path: string, node: ReactNode) {
               research: "77px",
               innovation: "67px",
             },
+            colors: {
+              prosaic_alignment: "#5ac2d2",
+              governance: "#63c9c8",
+              agent_foundations: "#e39b9d",
+              pivotal_act: "#d5dab8",
+              mad_science: "#d66546",
+            },
           },
         },
       },
-    }),
+    })
   );
 }
 
@@ -278,7 +293,7 @@ for await (const file of Deno.readDir("images")) {
   if (!file.isFile) continue;
   await zipWriter.add(
     `userassets/${file.name}`,
-    new BlobReader(new Blob([await Deno.readFile(`images/${file.name}`)])),
+    new BlobReader(new Blob([await Deno.readFile(`images/${file.name}`)]))
   );
 }
 await zipWriter.close();
