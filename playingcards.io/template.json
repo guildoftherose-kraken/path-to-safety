@@ -1906,6 +1906,10 @@
       "type-ffb7518a-6a0e-4bf9-bfdc-4a3e4b42050e": {
         "image": "package://userassets/rules_6.svg",
         "label": "Rules 6"
+      },
+      "type-6de8c7e4-6075-11ee-8c99-0242ac120002": {
+        "image": "package://userassets/rules_7.svg",
+        "label": "Rules 7"
       }
     },
     "dragging": null,
@@ -1994,6 +1998,19 @@
     "dragging": null,
     "faceup": true,
     "id": "b4126068-d893-4728-bf56-c9f013a5caei",
+    "owner": null,
+    "parent": "38eaf327-915c-43da-a242-e45f03663e26",
+    "type": "card",
+    "x": 33,
+    "y": 35,
+    "z": 31400
+  },
+  {
+    "cardType": "type-6de8c7e4-6075-11ee-8c99-0242ac120002",
+    "deck": "342a5c18-55ae-4d3e-a366-eccd136b9311",
+    "dragging": null,
+    "faceup": true,
+    "id": "ca71db29-8a16-4405-8adf-1ae602d591d7",
     "owner": null,
     "parent": "38eaf327-915c-43da-a242-e45f03663e26",
     "type": "card",

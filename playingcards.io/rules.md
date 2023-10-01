@@ -4,7 +4,7 @@ You are a community of researchers racing to develop a strong AI alignment strat
 
 ### Game Objective
 
-There are four strategies, "Governance", "Agent Foundations", "Pivotal Act", and "Prosaic YOLO Shard". Each of these strategies has a hidden
+There are four strategies, "Governance", "Agent Foundations", "Pivotal Act", and "Prosaic Alignment". Each of these strategies has a hidden
 difficulty between 1 and 13. You need your progress in one of the strategies to be higher than its difficulty at the end of the game to win.
 Each strategy has a progress counter next to it that you use to track your progress toward that strategy. You can play cards each turn that
 can help increase your progress or reveal more information about the strategy difficulty. However, at the end of each round, you will need
@@ -88,3 +88,18 @@ When you advance Mad Science, do the following:
    dice left to add, then do nothing.
 2. If the "1 x continue" indicator is showing, remove a Mad Science die from the Mad Science dice pool. Then if there is only one die in the
    Mad Science dice pool, change the "1 x continue" indicator to the "1 ✓ end" indicator by clicking on it.
+
+---
+
+### Game Materials
+
+This game can be played physically using the following materials:
+
+- 3 decks of regular playing cards
+- 14 even-sided dice for Mad Science dice (designate half the sides as positive and half as negative)
+- 1 six-sided die for the Acceleration Risk die
+
+Designate one suit of cards for each of the four strategies. Separate the cards into suits for one deck to use as the strategy cards, and
+shuffle the other two decks together to form the Science deck. The face cards should be treated as Research cards and the numbered cards
+should be treated as Innovation cards. The numbered cards that with a value less than 6 are treated as having an acceleration risk
+proportional to their value. Be sure all the jokers are shuffled into the Science deck, these are treated as Mad Science cards.

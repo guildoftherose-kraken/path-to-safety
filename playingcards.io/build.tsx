@@ -1,10 +1,5 @@
 #!/usr/bin/env -S deno run --no-prompt --allow-read --allow-write
-import {
-  BlobReader,
-  TextReader,
-  Uint8ArrayWriter,
-  ZipWriter,
-} from "https://deno.land/x/zipjs@v2.7.20/index.js";
+import { BlobReader, TextReader, Uint8ArrayWriter, ZipWriter } from "https://deno.land/x/zipjs@v2.7.20/index.js";
 import { range, zip } from "https://deno.land/x/lodash@4.17.15-es/lodash.js";
 // @deno-types="npm:@types/react@18.2.15"
 import React, { ReactNode } from "npm:react@18.2.0";
@@ -100,7 +95,7 @@ function InnovationCard({
 }) {
   return (
     <div
-      tw={`flex flex-col items-center w-full h-full font-sans text-base 
+      tw={`flex flex-col items-center w-full h-full font-sans text-base
       ${bg(strategy)}`}
     >
       <div tw="flex text-center text-3xl font-bold mb-0.5 mt-1">Innovation</div>
@@ -148,9 +143,11 @@ function StrategyCard({
 }) {
   return (
     <div
-      tw={`flex flex-col items-center w-full h-full font-sans text-base p-3 ${bg(
-        strategy
-      )}`}
+      tw={`flex flex-col items-center w-full h-full font-sans text-base p-3 ${
+        bg(
+          strategy,
+        )
+      }`}
     >
       <div tw="flex w-full items-center h-[20px] justify-between">
         <div tw={`flex text-${value < 10 ? "4xl" : "3xl"} font-bold`}>
@@ -169,7 +166,7 @@ const pages = (await Deno.readTextFile("rules.md")).split("---");
 for (const [page, pageNum] of enumerate(pages)) {
   render(
     `images/rules_${pageNum + 1}.svg`,
-    <Rules page={pageNum + 1} numPages={pages.length} content={page} />
+    <Rules page={pageNum + 1} numPages={pages.length} content={page} />,
   );
 }
 
@@ -177,7 +174,7 @@ for (const [strategy, strategyNum] of enumerate(strategies)) {
   for (const risk of range(6)) {
     render(
       `images/innovation_${strategyNum + 1}_${risk}.svg`,
-      <InnovationCard risk={risk} strategy={strategy} />
+      <InnovationCard risk={risk} strategy={strategy} />,
     );
   }
 }
@@ -185,7 +182,7 @@ for (const [strategy, strategyNum] of enumerate(strategies)) {
 for (const [strategy, strategyNum] of enumerate(strategies)) {
   render(
     `images/research_${strategyNum + 1}.svg`,
-    <ResearchCard strategy={strategy} />
+    <ResearchCard strategy={strategy} />,
   );
 }
 
@@ -195,30 +192,19 @@ for (const [strategy, strategyNum] of enumerate(strategies)) {
   for (const value of range(13)) {
     render(
       `images/strategy_${strategyNum + 1}_${value + 1}.svg`,
-      <StrategyCard value={value + 1} strategy={strategy} />
+      <StrategyCard value={value + 1} strategy={strategy} />,
     );
   }
 }
 
 const markdownComponents = {
-  h1: ({ node, ...props }: Record<string, unknown>) => (
-    <div tw="flex text-xl font-bold mb-0.5" {...props} />
-  ),
-  h3: ({ node, ...props }: Record<string, unknown>) => (
-    <div tw="flex text-lg font-bold mb-0.5" {...props} />
-  ),
-  h4: ({ node, ...props }: Record<string, unknown>) => (
-    <div tw="flex font-bold" {...props} />
-  ),
-  p: ({ node, ...props }: Record<string, unknown>) => (
-    <div tw="flex mb-0.5" {...props} />
-  ),
-  ol: ({ node, ...props }: Record<string, unknown>) => (
-    <div tw="flex flex-col" {...props} />
-  ),
-  li: ({ node, ...props }: Record<string, unknown>) => (
-    <div tw="flex mb-0.5">• {props.children as ReactNode}</div>
-  ),
+  h1: ({ node, ...props }: Record<string, unknown>) => <div tw="flex text-xl font-bold mb-0.5" {...props} />,
+  h3: ({ node, ...props }: Record<string, unknown>) => <div tw="flex text-lg font-bold mb-0.5" {...props} />,
+  h4: ({ node, ...props }: Record<string, unknown>) => <div tw="flex font-bold" {...props} />,
+  p: ({ node, ...props }: Record<string, unknown>) => <div tw="flex mb-0.5" {...props} />,
+  ol: ({ node, ...props }: Record<string, unknown>) => <div tw="flex flex-col" {...props} />,
+  ul: ({ node, ...props }: Record<string, unknown>) => <div tw="flex flex-col" {...props} />,
+  li: ({ node, ...props }: Record<string, unknown>) => <div tw="flex mb-0.5">• {props.children as ReactNode}</div>,
 };
 
 function enumerate<T>(input: Array<T>): Array<[T, number]> {
@@ -281,7 +267,7 @@ async function render(path: string, node: ReactNode) {
           },
         },
       },
-    })
+    }),
   );
 }
 
@@ -293,7 +279,7 @@ for await (const file of Deno.readDir("images")) {
   if (!file.isFile) continue;
   await zipWriter.add(
     `userassets/${file.name}`,
-    new BlobReader(new Blob([await Deno.readFile(`images/${file.name}`)]))
+    new BlobReader(new Blob([await Deno.readFile(`images/${file.name}`)])),
   );
 }
 await zipWriter.close();
